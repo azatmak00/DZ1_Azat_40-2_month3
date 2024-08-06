@@ -23,25 +23,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const childBlock = document.querySelector('.child_block');
     const parentBlock = document.querySelector('.parent_block');
     const step = 5;
-    let position = 0;
+    let positionX = 0;
+    let positionY = 0;
+    let direction = 'right';
 
     function moveBlock() {
         const parentWidth = parentBlock.clientWidth;
+        const parentHeight = parentBlock.clientHeight;
         const childWidth = childBlock.clientWidth;
+        const childHeight = childBlock.clientHeight;
 
-        if (position + childWidth < parentWidth) {
-            position += step;
-            childBlock.style.left = `${position}px`;
-
-            requestAnimationFrame(moveBlock);
+        switch (direction) {
+            case 'right':
+                if (positionX + childWidth < parentWidth) {
+                    positionX += step;
+                } else {
+                    direction = 'down';
+                }
+                break;
+            case 'down':
+                if (positionY + childHeight < parentHeight) {
+                    positionY += step;
+                } else {
+                    direction = 'left';
+                }
+                break;
+            case 'left':
+                if (positionX > 0) {
+                    positionX -= step;
+                } else {
+                    direction = 'up';
+                }
+                break;
+            case 'up':
+                if (positionY > 0) {
+                    positionY -= step;
+                } else {
+                    direction = 'right';
+                }
+                break;
         }
-    }
 
+        childBlock.style.left = `${positionX}px`;
+        childBlock.style.top = `${positionY}px`;
+
+        requestAnimationFrame(moveBlock);
+    }
 
     moveBlock();
 });
-
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
