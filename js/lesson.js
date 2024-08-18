@@ -92,3 +92,46 @@ converter(somInput, { usd: usdInput, eur: eurInput });
 converter(usdInput, { som: somInput, eur: eurInput });
 converter(eurInput, { som: somInput, usd: usdInput });
 
+//card
+
+
+const cardBlock = document.querySelector('.card');
+const btnNext = document.querySelector('#btn-next');
+const btnPrev = document.querySelector('#btn-prev');
+let cardId = 1;
+const maxCards = 200;
+
+
+function updateCard(id) {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            cardBlock.innerHTML = `
+                <p>${data.title}</p>
+                <p style="color:${data.completed ? 'green' : 'red'}">${data.completed}</p>
+                <span>${data.id}</span>
+            `;
+        });
+}
+
+
+btnNext.onclick = () => {
+    cardId = cardId < maxCards ? cardId + 1 : 1;
+    updateCard(cardId);
+};
+
+
+btnPrev.onclick = () => {
+    cardId = cardId > 1 ? cardId - 1 : maxCards;
+    updateCard(cardId);
+};
+
+
+updateCard(cardId);
+
+
+
+// Запрос и вывод в консоль
+fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(response => response.json())
+    .then(posts => console.log(posts));
